@@ -23,5 +23,27 @@ class EventosController extends Controller
       return $this->render('CevezaBundle:eventos:all.html.twig',array('cerveza' => $cerveza));
 
     }
+    /**
+     * @Route("/crear/{nombre}/{ciudad}")
+     */
+    public function crearCerveza($nombre,$ciudad)
+   {
+     //nuevo objeto
+     $cerveza = new Cerveza();
+     $cerveza->setNombre($nombre);
+     $cerveza->setPais($ciudad);
+     $cerveza->setPoblacion("prueba");
+     $cerveza->setTipo("prueba");
+     $cerveza->setImportacion(2);
+     $cerveza->setTamano(2);
+     $cerveza->setfechaAlmacen(\DateTime::createFromFormat('d/m/Y','25/04/2015'));
+     $cerveza->setCantidad(2);
+     $cerveza->setFoto("prueba");
+     //lanzamos contra la base de datos
+     $mangDoct=$this->getDoctrine()->getManager();
+     $mangDoct->persist($cerveza);
+     $mangDoct->flush($cerveza);
+     return $this->render('CevezaBundle:eventos:crearempresa.html.twig',array('allCerveza'=>$cerveza->getNombre()));
 
+   }
 }
