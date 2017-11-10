@@ -5,6 +5,9 @@ namespace CevezaBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use CevezaBundle\Entity\Cerveza;
+use Symfony\Component\HttpFoundation\Request;
+//incluimos en nuestras librerias la clase del formulario
+use CevezaBundle\Form\CervezaType;
 /**
  * @Route("/eventos")
  */
@@ -43,7 +46,53 @@ class EventosController extends Controller
      $mangDoct=$this->getDoctrine()->getManager();
      $mangDoct->persist($cerveza);
      $mangDoct->flush($cerveza);
-     return $this->render('CevezaBundle:eventos:crearempresa.html.twig',array('allCerveza'=>$cerveza->getNombre()));
+     return $this->render('CevezaBundle:eventos:crearcerveza.html.twig',array('allCerveza'=>$cerveza->getNombre()));
 
    }
-}
+   /**
+    * @Route("/formulario")
+    */
+   public function crearFormCerveza(Request $request)
+   {
+     $cerveza = new Cerveza();
+    $form=$this->createForm(CervezaType::Class,$cerveza);
+    $form->handleRequest($request);
+    //si el request es enviado y validado , coge los datos
+    if ($form->isSubmitted() && $form->isValid()) {
+        // $form->getData() holds the submitted values
+        // but, the original `$task` variable has also been updated
+        $cerveza = $form->getData();
+
+        // ... perform some action, such as saving the task to the database
+        // for example, if Task is a Doctrine entity, save it!
+         $em = $this->getDoctrine()->getManager();
+         $em->persist($cerveza);
+         $em->flush();
+        return $this->render('CevezaBundle:eventos:insertada.html.twig');
+    }
+    // y le pasamos el formulario por array, utilizamos createView que nos pinta el formulario.
+    return $this->render('CevezaBundle:eventos:formulario.html.twig',array('form'=>$form->createView() ));
+
+   }
+   /**
+    * @Route("/actualizarform/{id}")
+    */
+   public function actuFormCerveza( Request $request,$id)
+   {
+
+
+		 $cerveza = $this->getDoctrine()->getRepository('CevezaBundle:Cerveza')->findById($id);
+     $form=$this->createForm(CervezaType::Class, $cerveza);
+     $form->handleRequest($request);
+
+     if ($form->isSubmitted() && $form->isValid())
+        {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($cerveza);
+            $em->flush();
+            return $this->render("CevezaBundle:eventos:update.html.twig");
+        }
+          return $this->render("CevezaBundle:eventos:update.html.twig", array('form'=>$form->createView() ));
+    }
+
+    }

@@ -1,0 +1,26 @@
+<p>
+La cerveza encontrada es:{{allCerveza}}
+</p>
+<!--Tenemos que crear el for para recorer el array creado y asi poder sacar los datos e imprimir por pantalla-->
+{% for cervezas in allCerveza %}
+Id:{{cervezas.id}}
+<br>
+Nombre:{{cervezas.nombre}}
+<br>
+Pais:{{cervezas.pais}}
+<br>
+Poblacion:{{cervezas.poblacion}}
+<br>
+Tipo:{{cervezas.tipo}}
+<br>
+Importacion:{{cervezas.importacion}}
+<br>
+Tamaño:{{cervezas.tamano}}
+<br>
+Fecha Almacen:{{cervezas.fechaAlmacen|date}}
+<br>
+Cantidad:{{cervezas.cantidad}}
+<br>
+Foto:{{cervezas.foto}}
+<br>
+{% endfor %}

@@ -310,5 +310,11 @@ class Cerveza
     {
         return $this->foto;
     }
+    //para devolver string
+    public function __toString(){
+       return $this->nombre;
+       return $this->pais;
+       return $this->poblacion;
+       return $this->cantidad;
+    }
 }
-
