@@ -79,9 +79,7 @@ class EventosController extends Controller
     */
    public function actuFormCerveza( Request $request,$id)
    {
-
-
-		 $cerveza = $this->getDoctrine()->getRepository('CevezaBundle:Cerveza')->findById($id);
+		 $cerveza = $this->getDoctrine()->getRepository('CevezaBundle:Cerveza')->find($id);
      $form=$this->createForm(CervezaType::Class, $cerveza);
      $form->handleRequest($request);
 
@@ -92,7 +90,7 @@ class EventosController extends Controller
             $em->flush();
             return $this->render("CevezaBundle:eventos:update.html.twig");
         }
-          return $this->render("CevezaBundle:eventos:update.html.twig", array('form'=>$form->createView() ));
+          return $this->render("CevezaBundle:eventos:formulario.html.twig", array('form'=>$form->createView() ));
     }
 
     }
